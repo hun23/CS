@@ -40,65 +40,65 @@
   - (for time-sharing environment)
 
 ## Scheduling Algorithms
-- FCFS(First-come First-served)
-  - non-preemptive(빼앗지 않는 방법)
-  - 들어온 순서대로 처리
-  - convoy effect: short process behind long process
-- SJF(Shortest-job-first)
-  - 각 프로세스의 다음번 CPU burst time을 가지고 스케줄링
-  - 가장 짧은 burst time 순서로 스케줄
-    - Non-preemptive
-      - 이번 CPU burst가 완료될 때 까지 CPU를 선점(preemption) 당하지 않음
-    - Preemptive
-      - 현재 수행중인 프로세스의 남은 burst time보다 더 짧은 CPU burst time을 가지는 새 프로세스가 도착하면 CPU를 빼앗김
-      - Shortest-Remaining-Time-First(SRTF)와 동의
-  - SJF is ***optimal***
-    - minimum average waiting time을 보장
-  - 단점
-    - starvation: long process may never execute
-    - CPU burst time 예측 문제
-      - 추정(estimation)만이 가능
-      - 과거의 CPU burst time을 이용(exponential averaging)
-      - current estimation = last cpu burst time * alpha + last estimated burst time * (1 - alpha)
-- Priority Scheduling
-  - A priority number(int) is associated with each process
-  - highest priority를 가진 프로세스에게 CPU 할당
-    - smallest integer = highest priority
-  - SJF는 일종의 priority scheduling(예측한 다음 cpu burst time을 priority로 사용)
-  - starvation 발생 가능
-    - ***Aging***으로 해결
-    - as time progresses increase the priority of the process
-- Round Robin(RR)
-  - 각 프로세스에 동일한 크기의 할당 시간(time quantum) 부여
-    - 일반적으로 10 ~ 100 ms
-  - 할당 시간이 종료되면 프로세스는 선점당하고(preempted) ready queue의 가장 뒤로 이동
-  - n개의 프로세스가 ready queue에 있고, 할당 시간이 q time unit인 경우 어떤 프로세스도 (n-1)q time unit 이상 기다리지 않음
-  - 성능:
-    - large q => FCFS
-    - small q => increased context switch overhead
-    - 일반적으로 SJF 보다 average turnaround time이 길지만, ***response time이 더 짧다***
-    - interactive job이 많은 경우 큰 장점이 된다
-    - CPU burst time이 long 과 short가 섞여있기 때문에 장점 발휘
-      - 전부 비슷한 burst time을 가지는 경우 모든 프로세스가 느리게 종료되는 단점(= long avg turnaround time)
-- Multi-level Queue
-  - ready queue를 여러 개로 분할
-    - foreground(interactive) in RR
-    - background(batch - no human interaction) in FCFS
-  - 큐에 대한 스케줄링이 필요
-    - Fixed priority scheduling
-      - serve all from foreground then from background
-      - possibility of starvation
-    - Time slice
-      - split CPU time for each queues
-      - eg: 80% to foreground, 20% to background
-- Multi-level Feedback Queue
-  - 프로세스가 다른 큐로 이동 가능한 Multi-level queue
-  - ***aging***을 이와 같은 방식으로 구현 가능
-  - 아래와 같은 요소를 고려
-    - queue의 수
-    - 각 queue의 scheduling algorithm
-    - process를 옮기는 기준
-    - 프로세스가 어떤 queue로 들어갈지 결정하는 기준 
+### FCFS(First-come First-served)
+- non-preemptive(빼앗지 않는 방법)
+- 들어온 순서대로 처리
+- convoy effect: short process behind long process
+### SJF(Shortest-job-first)
+- 각 프로세스의 다음번 CPU burst time을 가지고 스케줄링
+- 가장 짧은 burst time 순서로 스케줄
+  - Non-preemptive
+    - 이번 CPU burst가 완료될 때 까지 CPU를 선점(preemption) 당하지 않음
+  - Preemptive
+    - 현재 수행중인 프로세스의 남은 burst time보다 더 짧은 CPU burst time을 가지는 새 프로세스가 도착하면 CPU를 빼앗김
+    - Shortest-Remaining-Time-First(SRTF)와 동의
+- SJF is ***optimal***
+  - minimum average waiting time을 보장
+- 단점
+  - starvation: long process may never execute
+  - CPU burst time 예측 문제
+    - 추정(estimation)만이 가능
+    - 과거의 CPU burst time을 이용(exponential averaging)
+    - current estimation = last cpu burst time * alpha + last estimated burst time * (1 - alpha)
+### Priority Scheduling
+- A priority number(int) is associated with each process
+- highest priority를 가진 프로세스에게 CPU 할당
+  - smallest integer = highest priority
+- SJF는 일종의 priority scheduling(예측한 다음 cpu burst time을 priority로 사용)
+- starvation 발생 가능
+  - ***Aging***으로 해결
+  - as time progresses increase the priority of the process
+### Round Robin(RR)
+- 각 프로세스에 동일한 크기의 할당 시간(time quantum) 부여
+  - 일반적으로 10 ~ 100 ms
+- 할당 시간이 종료되면 프로세스는 선점당하고(preempted) ready queue의 가장 뒤로 이동
+- n개의 프로세스가 ready queue에 있고, 할당 시간이 q time unit인 경우 어떤 프로세스도 (n-1)q time unit 이상 기다리지 않음
+- 성능:
+  - large q => FCFS
+  - small q => increased context switch overhead
+  - 일반적으로 SJF 보다 average turnaround time이 길지만, ***response time이 더 짧다***
+  - interactive job이 많은 경우 큰 장점이 된다
+  - CPU burst time이 long 과 short가 섞여있기 때문에 장점 발휘
+    - 전부 비슷한 burst time을 가지는 경우 모든 프로세스가 느리게 종료되는 단점(= long avg turnaround time)
+### Multi-level Queue
+- ready queue를 여러 개로 분할
+  - foreground(interactive) in RR
+  - background(batch - no human interaction) in FCFS
+- 큐에 대한 스케줄링이 필요
+  - Fixed priority scheduling
+    - serve all from foreground then from background
+    - possibility of starvation
+  - Time slice
+    - split CPU time for each queues
+    - eg: 80% to foreground, 20% to background
+### Multi-level Feedback Queue
+- 프로세스가 다른 큐로 이동 가능한 Multi-level queue
+- ***aging***을 이와 같은 방식으로 구현 가능
+- 아래와 같은 요소를 고려
+  - queue의 수
+  - 각 queue의 scheduling algorithm
+  - process를 옮기는 기준
+  - 프로세스가 어떤 queue로 들어갈지 결정하는 기준 
 ## Multiple-Processor Scheduling
 - Homogeneous processor인 경우
   - queue에 한 줄로 세워 각 프로세서가 알아서 수행

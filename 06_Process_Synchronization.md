@@ -4,7 +4,7 @@
 - 여러 프로세스가 하나의 storage 값을 접근하는 경우 Race Condition의 가능성이 있음
 - 일반적으로 프로세스는 자신의 데이터에만 접근 가능하기 때문에 문제가 생기지 않음
 - 하지만 System call을 통한 운영체제 내의 데이터를 건드리는 과정에서 문제 발생 가능
-  
+
 ## Race Condition
 - kernel 수행 중 인터럽트 발생 시
   - 해결책: 해당 작업 수행 중 interrupt를 disable 시키도록
